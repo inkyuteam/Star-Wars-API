@@ -41,7 +41,27 @@ export class ProductListComponent {
     product['imageUrl'] = 'assets/images/no_image.png';
   }
 
-  
+  getPageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  nextPage() {
+    this.currentPage = this.currentPage % this.totalPages + 1;
+    this.router.navigate(['/products', this.currentPage, this.buttonText]);
+    this.fetchProducts(this.currentPage, this.buttonText);
+  }
+
+  prevPage() {
+    this.currentPage = (this.currentPage - 2 + this.totalPages) % this.totalPages + 1;
+    this.router.navigate(['/products', this.currentPage, this.buttonText]);
+    this.fetchProducts(this.currentPage, this.buttonText);
+  }
+
+  pageClicked(page: number) {
+    this.currentPage = page;
+    this.router.navigate(['/products', this.currentPage, this.buttonText]);
+    this.fetchProducts(this.currentPage, this.buttonText);
+  }
 
   fetchProducts(page: number, apiType: 'vehicles' | 'starships'): void {
     this.isLoading = true;
