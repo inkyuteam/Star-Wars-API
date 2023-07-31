@@ -1,0 +1,23 @@
+.card-name {
+    color: white;
+    font-size: 150%;
+}
+
+.card-text, .card-content{
+    color: white;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px solid white;
+    padding: 4px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+.form-control, .add-button {
+    width: 9rem;
+}

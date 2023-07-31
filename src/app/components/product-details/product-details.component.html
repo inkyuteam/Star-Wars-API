@@ -1,1 +1,38 @@
-<p>product-details works!</p>
+<div>
+    <div *ngIf="isLoading; else productCard">
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <ng-template #productCard>
+        <button class="btn btn-outline-light mb-2 mr-2" (click)="backHome()">🏠 Back to home</button>
+        <button class="btn btn-outline-light mb-2" (click)="backList()">← Back to the previous page</button>
+        <div class="row">
+            <div class="col-sm-4 text-break">
+                <img [src]="product.imageUrl" alt="Card image" (error)="handleImageError(product)">
+                <div class="card-name">{{product.name}}</div>
+                <ng-container *ngIf="product.cost_in_credits !== 'unknown'; else outOfStock">
+                    <p class="card-text">{{product.sales}}$</p>
+                </ng-container>
+                <ng-template #outOfStock>
+                    <p class="card-text">Out of stock</p>
+                </ng-template>
+            </div>
+            <div class="col-sm-8">
+                <input type="number" id="typeNumber" class="form-control mb-2" placeholder="Quentity" [defaultValue]="1"
+                    [min]="1" [value]="quentity" [(ngModel)]="quentity" />
+                <button class="add-button btn btn-outline-light" (click)="addToCart()">+ Add to Cart</button>
+            </div>
+        </div>
+        <div class="card-content">
+            <table class="mt-2 mb-4">
+                <tr *ngFor="let key of objectKeys">
+                    <td>{{key}}</td>
+                    <td>{{product[key]}}</td>
+                </tr>
+            </table>
+        </div>
+    </ng-template>
+</div>
