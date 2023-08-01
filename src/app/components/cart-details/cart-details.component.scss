@@ -1,0 +1,93 @@
+$border-color: #3D315B;
+$list-background-color: #444B6E;
+$active-list-background-color: #9AB87A;
+$border-radius: 5px;
+
+
+@mixin media-breakpoint-only($breakpoint) {
+  @media only screen and (min-width: #{$breakpoint}) {
+    @content;
+  }
+}
+
+.card-columns {
+  @include media-breakpoint-only(992px) {
+    column-count: 3;
+  }
+
+  @include media-breakpoint-only(1200px) {
+    column-count: 4;
+  }
+
+  position: relative;
+}
+
+.card {
+  position: relative;
+  border: 1px solid white;
+  border-radius: 0;
+  color: white;
+  background-color: rgba($color: #000000, $alpha: 0.8);
+  opacity: 0.8;
+}
+
+.card.loading {
+  border: 1px solid gray;
+}
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: rgba(255, 255, 255, 0.85) 0px 15px 25px, rgba(255, 255, 255, 0.95) 0px 5px 10px;
+}
+
+.card.loading:hover {
+  cursor: auto;
+  box-shadow: none;
+}
+
+.category {
+  color: white;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+
+  li {
+    color: #fff;
+    display: flex;
+
+    a {
+      cursor: pointer;
+      background-color: #444B6E;
+      color: #fff;
+      padding: 10px 15px;
+      border: 2px solid $border-color;
+      border-right: 0;
+    }
+  }
+
+  li.active a {
+    background-color: $active-list-background-color;
+  }
+
+  li:first-child a {
+    border-radius: $border-radius 0 0 $border-radius;
+  }
+
+  li:last-child a {
+    border-radius: 0 $border-radius $border-radius 0;
+    border-right: 2px solid $border-color;
+  }
+}
+
+.loadingCard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($color: #000000, $alpha: 0.7);
+}

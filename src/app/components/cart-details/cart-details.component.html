@@ -1,1 +1,42 @@
-<p>cart-details works!</p>
+<div>
+    <div *ngIf="isLoading; else productsCard">
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <ng-template #productsCard>
+        <button class="btn btn-outline-light mb-2 mr-2" (click)="backHome()">🏠 Back to home</button>
+        <button class="btn btn-outline-light mb-2" (click)="backList()">← Back to the previous page</button>
+        <div>
+            <div *ngIf="cartItems.length > 0">
+                <div class="card-columns">
+                    <ng-container *ngFor="let product of cartItems">
+                        <div class="card" [ngClass]="{ 'loading': isLoading }">
+                            <img class="card-img-top" [src]="product.imageUrl" alt="Card image" style="width:100%"
+                                (error)="handleImageError(product)">
+                            <div class="card-body">
+                                <h4 class="card-title">{{product.name}}</h4>
+                                <ng-container *ngIf="product.cost_in_credits !== 'unknown'; else outOfStock">
+                                    <p class="card-text">{{product.sales}}$ ✖ {{product.quentity}} =
+                                        {{product.sales * product.quentity}}$</p>
+                                </ng-container>
+                                <ng-template #outOfStock>
+                                    <p class="card-text">Out of stock</p>
+                                </ng-template>
+                                <a class="btn btn-outline-light mr-2" (click)="redirectToDetailPage(isLoading, product)">View
+                                    Details</a>
+                                <a class="btn btn-outline-light" (click)="deleteFromCart(product)">Remove</a>
+                            </div>
+                            <div *ngIf="isLoading" class="loadingCard"></div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div *ngIf="cartItems.length === 0" style="color: white;">
+                <p>Your cart is empty.</p>
+            </div>
+        </div>
+    </ng-template>
+</div>
