@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
+import { CartService } from 'src/app/services/cart.service';
+import { SalesService } from 'src/app/services/sales.service';
 
 @Component({
   selector: 'app-product-details',
@@ -17,7 +19,7 @@ export class ProductDetailsComponent {
   origin: string = '';
   quentity: number = 1;
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private router: Router, private cartService: CartService, private salesService: SalesService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -38,6 +40,7 @@ export class ProductDetailsComponent {
         this.product = response;
         this.objectKeys = Object.keys(this.product);
         this.product['imageUrl'] = `assets/images/${this.type}/${this.id}.jpg`;
+        this.product['sales'] = this.salesService.calculateSalePrice(this.product.url, this.product.cost_in_credits);
 
       },
       (error) => {
@@ -60,6 +63,7 @@ export class ProductDetailsComponent {
   }
 
   addToCart() {
+    this.cartService.addToCart(this.product, this.quentity);
     this.router.navigate(['/mycart', this.router.url]);
   }
 }

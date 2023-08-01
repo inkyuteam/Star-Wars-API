@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CategoryService } from 'src/app/services/category.service';
+import { SalesService } from 'src/app/services/sales.service';
 
 @Component({
   selector: 'app-product-list',
@@ -20,7 +21,7 @@ export class ProductListComponent {
   isLoading = false;
 
   constructor(private apiService: ApiService, private router: Router, private route: ActivatedRoute,
-    private categoryService: CategoryService) {
+    private categoryService: CategoryService, private salesService: SalesService) {
     this.subscription = this.categoryService.buttonText$.subscribe((text) => {
       this.buttonText = text;
       this.currentPage = 1;
@@ -37,12 +38,12 @@ export class ProductListComponent {
     this.fetchProducts(this.currentPage, this.buttonText);
   }
 
-  handleImageError(product: any) {
-    product['imageUrl'] = 'assets/images/no_image.png';
-  }
-
   getPageNumbers(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  handleImageError(product: any) {
+    product['imageUrl'] = 'assets/images/no_image.png';
   }
 
   nextPage() {
@@ -76,6 +77,7 @@ export class ProductListComponent {
           const num = parts[parts.length - 2];
 
           this.products[i]['imageUrl'] = `assets/images/${this.buttonText}/${num}.jpg`;
+          this.products[i]['sales'] = this.salesService.calculateSalePrice(this.products[i].url, this.products[i].cost_in_credits);
         }
       },
       (error) => {
