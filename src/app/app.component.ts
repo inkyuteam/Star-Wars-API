@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CategoryService } from './services/category.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -10,12 +10,19 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'SW';
+  origin = '';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.origin = params['origin'];
+    });
+  }
 
   goToCart() {
-    if (!this.router.url.includes('mycart')) {
-      this.router.navigate(['/mycart', this.router.url]);
+    if (this.router.url.split('/')[1] !== 'mycart') {
+      this.router.navigate(['/mycart', '/']);
     }
   }
 }
